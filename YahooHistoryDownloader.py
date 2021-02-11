@@ -38,7 +38,3 @@ def SaveData(df, filename):
 def download(ticker_list):
     for tik in ticker_list:
         getData(tik)
-
-
-ticer_List = ["DOGE-USD","MSFT", "TSLA", "AMD", "IIPR"]
-download(ticer_List)

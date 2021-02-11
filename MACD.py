@@ -74,21 +74,6 @@ def calculate(filename):
     print('amount of sells: ' + str(sell_counter))
     print('account at day ' + str(x) + ': ' + str(account))
     # print('amount gain: ' + str(account - (100 + daily_close_list[0])))
-    print('percent gain: ' + str(account / starting * 100) + "%" + '\n\n\n')
+    print('percent gain: ' + str((account / starting * 100) - 100) + "%" + '\n\n\n')
     # print('done')
 
-
-print('testing MSFT:')
-calculate('testFiles\MSFT_2021-02-08.csv')
-
-print('testing TSLA:')
-calculate('testFiles\TSLA_2021-02-08.csv')
-
-print('testing AMD:')
-calculate('testFiles\AMD_2021-02-08.csv')
-
-print('testing IIPR:')
-calculate('testFiles\IIPR_2021-02-08.csv')
-
-print('testing doge:')
-calculate('testFiles\DOGE-USD_2021-02-08.csv')
