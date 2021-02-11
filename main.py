@@ -8,7 +8,7 @@ Put the name of the stock you want to check for example:
 this will download the data and run the MACD on it
 """
 
-ticer_List = ["DOGE-USD","MSFT", "TSLA", "AMD", "IIPR", "NVDA"]
+ticer_List = ["DOGE-USD","MSFT", "TSLA", "AMD", "IIPR", "NVDA", "BTC-USD"]
 YahooHistoryDownloader.download(ticer_List)
 
 testFiles = listdir("./testFiles")
