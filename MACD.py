@@ -40,7 +40,7 @@ def calculate(filename):
 
     # print(daily_close_list)# uncomment this line if you need to check the loader
 
-    x = 2  # x is for how many days average we want to do our MACD then is used to traverse through the data.
+    x = 3  # x is for how many days average we want to do our MACD then is used to traverse through the data.
 
     status = 0  # indicates whether we are in a sold or have our money or bought and we are invested
 
@@ -57,7 +57,11 @@ def calculate(filename):
     sell_counter = 0
     while x < len(daily_close_list):
 
-        day_list = [daily_close_list[x-i] for i in range(1, x)]
+        # the next commented line is a messed up list but for some reason it works really well
+        # day_list = [daily_close_list[x-i] for i in range(x-2, x)]
+
+        day_list = [daily_close_list[i] for i in range(x - 3, x)] # here is a proper MACD
+
         do_what = macd(day_list, daily_close_list[x])
 
         # code for if the MACD algorithm outputed a buy

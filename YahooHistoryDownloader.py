@@ -17,7 +17,7 @@ yf.pdr_override()
 today = date.today()
 # We can get data by our choice by giving days bracket
 start_date = datetime.datetime(2019, 8, 11)
-end_date = datetime.datetime(202, 8, 11)
+end_date = datetime.datetime(2020, 7, 1)
 files = []
 
 
