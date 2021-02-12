@@ -1,5 +1,6 @@
 from Alpaca import Account_Info, config, Alpaca_Functions
 from datetime import datetime
+import time as t
 
 times = config.times  # times to check if we want to buy or not
 stocks = config.stocks  # where stocks[[symbol, quantity desired]]
@@ -62,6 +63,7 @@ try:
 
             print("Next Trade time At: " + str(next_time(times)))
         times.append(next_trade_time)
+        t.sleep(59)
 
 
 except KeyboardInterrupt:
