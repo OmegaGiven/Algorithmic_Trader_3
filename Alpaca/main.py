@@ -1,5 +1,5 @@
 from Alpaca import Account_Info, config, Alpaca_Functions
-import datetime
+from datetime import datetime
 
 times = config.times  # times to check if we want to buy or not
 stocks = config.stocks  # where stocks[[symbol, quantity desired]]
@@ -45,12 +45,19 @@ try:
 
         if current_time == next_trade_time:
             for i in stocks:
-                trade_or_not = Alpaca_Functions.macd(i[0])
+                trade_or_not = Alpaca_Functions.macd(i[0], api, 4)
 
                 if trade_or_not == 'sell':
-                    Alpaca_Functions.sell(i, api.get_position(i).qty)
-                if trade_or_not == 'buy':
-                    Alpaca_Functions.buy(i, float(api.get_account().buying_power) // api.get_barset('AMD', 'day', limit=1)['AMD'][0].c)
+                    try:
+                        Alpaca_Functions.sell(i[0], api, api.get_position(i[0]).qty)
+                    except:
+                        continue
+                try:
+                    api.get_position(i[0])
+                    if trade_or_not == 'buy':
+                        Alpaca_Functions.buy(i[0], api, i[1])
+                except:
+                    print("Already bought in on: " + i[0])
 
 
             print("Next Trade time At: " + str(next_time(times)))

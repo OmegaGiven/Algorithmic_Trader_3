@@ -16,12 +16,10 @@ def macd(symbol, api, limit_quantity):
 
 
 def buy(symbol, api, quantity=1):
-    f = open('History', 'a+')
-    api.submit_order(symbol, quantity, 'buy', 'market', 'gtc')
-    print('buying: ' + symbol + ' at ' + ' quantity: ' + str(quantity))
+    api.submit_order(symbol=symbol, qty=quantity, side='buy', type='market', time_in_force='gtc')
+    print('buying: ' + symbol + ' at ' + ' quantity: ' + str(quantity) + ' for : ')
 
 
-def sell(symbol, api, quantity=1, limit_price=0):
-    f = open('History', 'a+')
+def sell(symbol, api, quantity=1):
     api.submit_order(symbol=symbol, qty=quantity, side='sell', type='market', time_in_force='gtc')
-    print('\nselling: ' + symbol + ' at ' + ' quantity: ' + str(quantity))
+    print('selling: ' + symbol + ' at ' + ' quantity: ' + str(quantity) + ' for : ')
