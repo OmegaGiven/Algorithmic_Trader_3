@@ -45,25 +45,26 @@ try:
         next_trade_time = times.pop(0)
 
         if current_time == next_trade_time:
+            amount = float(account.buying_power) // len(stocks)
             for i in stocks:
-                trade_or_not = Alpaca_Functions.macd(i[0], api, 4)
+                trade_or_not = Alpaca_Functions.macd(i, api, 4)
 
                 if trade_or_not == 'sell':
                     try:
-                        Alpaca_Functions.sell(i[0], api, api.get_position(i[0]).qty)
+                        Alpaca_Functions.sell(i, api, api.get_position(i).qty)
                     except:
                         continue
                 try:
                     api.get_position(i[0])
                     if trade_or_not == 'buy':
-                        Alpaca_Functions.buy(i[0], api, i[1])
+                        quantity = Alpaca_Functions.get_quantity(i, api, amount)
+                        Alpaca_Functions.buy(i, api, quantity)
                 except:
-                    print("Already bought in on: " + i[0])
-
+                    print("Already bought in on: " + i)
 
             print("Next Trade time At: " + str(next_time(times)))
         times.append(next_trade_time)
-        t.sleep(59)
+
 
 
 except KeyboardInterrupt:

@@ -23,3 +23,11 @@ def buy(symbol, api, quantity=1):
 def sell(symbol, api, quantity=1):
     api.submit_order(symbol=symbol, qty=quantity, side='sell', type='market', time_in_force='gtc')
     print('selling: ' + symbol + ' at ' + ' quantity: ' + str(quantity) + ' for : ')
+
+
+def get_quantity(symbol, api, amount):
+    bar_set = api.get_barset(symbol, 'day', limit=1)
+    stock = bar_set[symbol]
+    current = stock[0].o
+    quantity = amount // current
+    return quantity
