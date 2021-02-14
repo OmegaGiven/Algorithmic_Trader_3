@@ -9,7 +9,7 @@ def macd(symbol, api, limit_quantity):
     day3 = stock[2].c
     days_average = (day1 + day2 + day3) / 3
     current = stock[3].o
-    if current > days_average * 0.9:
+    if current > days_average * 0.95:
         return 'buy'
     else:
         return 'sell'
