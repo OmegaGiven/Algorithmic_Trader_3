@@ -1,4 +1,4 @@
-from Alpaca import Account_Info, config, Alpaca_Functions
+import Account_Info, config, Alpaca_Functions
 from datetime import datetime
 import time as t
 
