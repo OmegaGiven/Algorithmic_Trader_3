@@ -39,16 +39,15 @@ def margingains(n_day, current_day):
         return "buy"
 
 
-def calculateMACD(filename):
+def calculateMACD(filename, x=3, starting=1000):
     daily_close_list = loader(filename)
-
+    # starting indicates the amount we want to start with
+    # x is for how many days average we want to do our MACD then is used to traverse through the data.
     # print(daily_close_list)# uncomment this line if you need to check the loader
-
-    x = 3  # x is for how many days average we want to do our MACD then is used to traverse through the data.
-
+    day_average = x+1
     status = 0  # indicates whether we are in a sold or have our money or bought and we are invested
 
-    starting = 1000  # indicates the amount we want to start with
+    starting = 100000
 
     account = starting  # sets up our account that will buy and sell from
 
@@ -64,7 +63,7 @@ def calculateMACD(filename):
         # the next commented line is a messed up list but for some reason it works really well
         # day_list = [daily_close_list[x-i] for i in range(x-2, x)]
 
-        day_list = [daily_close_list[i] for i in range(x - 4, x)] # here is a proper MACD
+        day_list = [daily_close_list[i] for i in range(x - day_average, x)] # here is a proper MACD
 
         do_what = macd(day_list, daily_close_list[x])
 
@@ -101,16 +100,14 @@ def calculateMACD(filename):
     print('percent gain: ' + str((account / starting * 100) - 100) + "%" + '\n')
 
 
-def calculateMR(filename):
+def calculateMR(filename, x=3, starting=1000):
+    # x is for how many days average we want to do our MACD then is used to traverse through the data.
+    # indicates the amount we want to start with
     daily_close_list = loader(filename)
-
+    day_average = x+1
     # print(daily_close_list)# uncomment this line if you need to check the loader
 
-    x = 3  # x is for how many days average we want to do our MACD then is used to traverse through the data.
-
     status = 0  # indicates whether we are in a sold or have our money or bought and we are invested
-
-    starting = 1000  # indicates the amount we want to start with
 
     account = starting  # sets up our account that will buy and sell from
 
@@ -126,7 +123,7 @@ def calculateMR(filename):
         # the next commented line is a messed up list but for some reason it works really well
         # day_list = [daily_close_list[x-i] for i in range(x-2, x)]
 
-        day_list = [daily_close_list[i] for i in range(x - 4, x)] # here is a proper MACD
+        day_list = [daily_close_list[i] for i in range(x - day_average, x)] # here is a proper MACD
 
         do_what = margingains(day_list, daily_close_list[x])
 
