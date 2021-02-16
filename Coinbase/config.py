@@ -1,3 +1,3 @@
-api_key = "<api_key>"
-api_secret = "<api_secret>"
-api_version='YYYY-MM-DD'
+api_key = "Pxu7LwrMyycZU9Tx"
+api_secret = "uSXmTs81INzMNNDOcBSAUGslzm6VQwHN"
+api_version = '2021-02-13'

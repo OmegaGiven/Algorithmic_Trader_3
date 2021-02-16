@@ -9,7 +9,7 @@ this will download the data and run the MACD on it
 """
 # Negative companies "IBM", "BTI", "MO", "INTC"
 # "DOGE-USD", "TSLA", "AMD", "IIPR", "NVDA", "BTC-USD", "MSFT", "AMD", "AAPL", "TMUS", "AMZN",
-ticer_List = [ "MSFT"]
+ticer_List = [ "RCL"]
 YahooHistoryDownloader.download(ticer_List)
 
 testFiles = listdir("./testFiles")
