@@ -34,6 +34,8 @@ try:
     api = Account_Info.getAccount()
 
     account = api.get_account()
+    print(account)
+
     for x in stocks:
         try:
             print(api.get_position(x))
@@ -67,7 +69,7 @@ try:
 
                 # the try catch is to make sure the program doesnt end if you check your position and there is none.
                 try:
-                    api.get_position(i[0])
+                    api.get_position(i)
                     if trade_or_not == 'sell':
                         try:
                             Alpaca_Functions.sell(i, api, api.get_position(i).qty)
