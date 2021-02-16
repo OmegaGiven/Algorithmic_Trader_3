@@ -35,6 +35,7 @@ try:
 
     account = api.get_account()
     print(account)
+    print(api.get_position)
 
     current_time = datetime.now().strftime("%H:%M:%S")
     print("Alpaca Trader activated\nCurrent Time: " + current_time)
