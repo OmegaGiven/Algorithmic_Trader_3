@@ -66,7 +66,7 @@ try:
             # for every stock in your list it will check whether to buy or sell
             for i in stocks:
                 # checks the barset and sees whether to buy or not.
-                trade_or_not = Alpaca_Functions.macd(i, api, 1)
+                trade_or_not = Alpaca_Functions.macd(i, api, 2)
 
                 # the try catch is to make sure the program doesnt end if you check your position and there is none.
                 try:
