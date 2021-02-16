@@ -18,7 +18,7 @@ for x in testFiles:
     # print('MACD:')
     # MACD.calculateMACD("testFiles/" + x, 5, 100000)
     print('Mean Revision:')
-    MACD.calculateMR("testFiles/" + x, 5, 100000)
+    MACD.calculateMR("testFiles/" + x, 3, 100000)
     print('\n\n\n')
 
 input("Press Enter to Quit")
