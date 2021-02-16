@@ -2,4 +2,4 @@
 
 times = ["15:30:00"]
 
-stocks = ["AMD","MSFT","AAPL"]
+stocks = ["AMD", "MSFT", "AAPL", "RCL"]

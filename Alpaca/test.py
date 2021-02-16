@@ -91,3 +91,8 @@ print("AMD")
 bar_set = api.get_barset('AMD', 'day')
 stock = bar_set['AMD']
 calculateMR(stock, 1, 1000)
+
+print("RCL")
+bar_set = api.get_barset('RCL', 'day')
+stock = bar_set['RCL']
+calculateMR(stock, 1, 1000)
