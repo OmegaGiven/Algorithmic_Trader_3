@@ -5,12 +5,14 @@ def loader(filename):
         csv_reader = csv.reader(csv_file)
         line_count = 0
         daily_close = []
+        daily_close_dates = []
         for row in csv_reader:
             if line_count != 0:
                 daily_close.append(float(row[4]))
+                daily_close_dates.append(row[0])
             line_count += 1
         # print(f'Processed {line_count} lines.')
-        return daily_close
+        return daily_close, daily_close_dates
 
 
 # Our MACD function takes a set of days and calculates the average.
@@ -40,7 +42,7 @@ def margingains(n_day, current_day):
 
 
 def calculateMACD(filename, x=3, starting=1000):
-    daily_close_list = loader(filename)
+    daily_close_list, daily_close_dates = loader(filename)
     # starting indicates the amount we want to start with
     # x is for how many days average we want to do our MACD then is used to traverse through the data.
     # print(daily_close_list)# uncomment this line if you need to check the loader
@@ -72,7 +74,7 @@ def calculateMACD(filename, x=3, starting=1000):
             # divides the price by the value we have to buy as much of the stock as possible.
             amount = account / daily_close_list[x]
             account -= amount * daily_close_list[x]
-            print('buy at: ' + str(daily_close_list[x]))
+            print('buy at: ' + str(daily_close_list[x]) + ' on: ' + daily_close_dates[x])
             print('account now at:' + str(account))
             buy_counter += 1
             status = 1
@@ -80,7 +82,7 @@ def calculateMACD(filename, x=3, starting=1000):
         # code for if the MACD algorithm outputed a sell
         elif do_what == 'sell' and status == 1:
             account += amount * daily_close_list[x]
-            print('sell stock at: ' + str(daily_close_list[x]))
+            print('sell stock at: ' + str(daily_close_list[x]) + ' on: ' + daily_close_dates[x])
             print('account now at:' + str(account))
             status = 0
             sell_counter += 1
@@ -89,7 +91,7 @@ def calculateMACD(filename, x=3, starting=1000):
     # sells based on last price so we can see the total.
     if status == 1:
         account += amount * daily_close_list[x-1]
-        print('sell stock at: ' + str(daily_close_list[x - 1]))
+        print('sell stock at: ' + str(daily_close_list[x - 1]) + ' on: ' + daily_close_dates[x-1])
         print('account now at:' + str(account))
         sell_counter += 1
 
@@ -103,7 +105,7 @@ def calculateMACD(filename, x=3, starting=1000):
 def calculateMR(filename, x=3, starting=1000):
     # x is for how many days average we want to do our MACD then is used to traverse through the data.
     # indicates the amount we want to start with
-    daily_close_list = loader(filename)
+    daily_close_list, daily_close_dates = loader(filename)
     day_average = x+1
     # print(daily_close_list)# uncomment this line if you need to check the loader
 
@@ -132,7 +134,7 @@ def calculateMR(filename, x=3, starting=1000):
             # divides the price by the value we have to buy as much of the stock as possible.
             amount = account / daily_close_list[x]
             account -= amount * daily_close_list[x]
-            print('buy at: ' + str(daily_close_list[x]))
+            print('buy at: ' + str(daily_close_list[x]) + ' on: ' + daily_close_dates[x])
             print('account now at:' + str(account))
             buy_counter += 1
             status = 1
@@ -140,7 +142,7 @@ def calculateMR(filename, x=3, starting=1000):
         # code for if the MACD algorithm outputed a sell
         elif do_what == 'sell' and status == 1:
             account += amount * daily_close_list[x]
-            print('sell stock at: ' + str(daily_close_list[x]))
+            print('sell stock at: ' + str(daily_close_list[x]) + ' on: ' + daily_close_dates[x])
             print('account now at:' + str(account))
             status = 0
             sell_counter += 1
@@ -149,7 +151,7 @@ def calculateMR(filename, x=3, starting=1000):
     # sells based on last price so we can see the total.
     if status == 1:
         account += amount * daily_close_list[x-1]
-        print('sell stock at: ' + str(daily_close_list[x - 1]))
+        print('sell stock at: ' + str(daily_close_list[x - 1]) + ' on: ' + daily_close_dates[x-1])
         print('account now at:' + str(account))
         sell_counter += 1
 

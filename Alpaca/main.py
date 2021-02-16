@@ -41,14 +41,27 @@ try:
     print("Next check to trade at: " + str(next_time(times)))
 
     while True:
+        # cycles through the times you setup to check the market at those times
+        # or you could be checking it as much as you want by taking out the if currtime=nexttradetime.
         current_time = datetime.now().strftime("%H:%M:%S")
         next_trade_time = times.pop(0)
 
+        # prints account information at 8am for debugging.
+        if current_time == "08:00:00":
+            account = api.get_account()
+            print(account)
+
+        # if its time to trade do the following:
         if current_time == next_trade_time:
+            # allocate buypower to the stocks you want. currently set to be even
             amount = float(account.buying_power) // len(stocks)
+
+            # for every stock in your list it will check whether to buy or sell
             for i in stocks:
-                # try:
+                # checks the barset and sees whether to buy or not.
                 trade_or_not = Alpaca_Functions.macd(i, api, 4)
+
+                # the try catch is to make sure the program doesnt end if you check your position and there is none.
                 try:
                     api.get_position(i[0])
                     if trade_or_not == 'sell':
@@ -57,14 +70,12 @@ try:
                         except:
                             continue
                 except:
-                    print("Dont own any of: " + i)
+                    print("Don't own any of: " + i)
 
                 if trade_or_not == 'buy':
                     quantity = Alpaca_Functions.get_quantity(i, api, amount)
                     Alpaca_Functions.buy(i, api, quantity)
 
-                # except:
-                #     print("Cannont buy right now. Maybe its a weekend")
 
             print("Next Trade time At: " + str(next_time(times)))
         times.append(next_trade_time)
