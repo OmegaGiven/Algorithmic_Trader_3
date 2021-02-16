@@ -106,7 +106,7 @@ def calculateMR(filename, x=3, starting=1000):
     # x is for how many days average we want to do our MACD then is used to traverse through the data.
     # indicates the amount we want to start with
     daily_close_list, daily_close_dates = loader(filename)
-    day_average = x+1
+    day_average = x
     # print(daily_close_list)# uncomment this line if you need to check the loader
 
     status = 0  # indicates whether we are in a sold or have our money or bought and we are invested
@@ -126,7 +126,6 @@ def calculateMR(filename, x=3, starting=1000):
         # day_list = [daily_close_list[x-i] for i in range(x-2, x)]
 
         day_list = [daily_close_list[i] for i in range(x - day_average, x)] # here is a proper MACD
-
         do_what = margingains(day_list, daily_close_list[x])
 
         # code for if the MACD algorithm outputed a buy

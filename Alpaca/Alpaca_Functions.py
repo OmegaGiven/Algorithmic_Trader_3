@@ -7,7 +7,7 @@ def macd(symbol, api, limit_quantity):
     total = 0
     for x in range(limit_quantity-1):
         total += stock[x].c
-    days_average = total / 3
+    days_average = total / (limit_quantity - 1)
     current = stock[limit_quantity-1].c
     if current > days_average * 1.05:
         return 'buy'
