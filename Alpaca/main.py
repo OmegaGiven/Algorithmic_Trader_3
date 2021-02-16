@@ -38,9 +38,10 @@ try:
 
     for x in stocks:
         try:
-            print(api.get_position(x))
+            current = api.get_position(x)
+            print(current)
         except:
-            print("No positions of: " + stocks)
+            print("No positions of: " + x)
 
     current_time = datetime.now().strftime("%H:%M:%S")
     print("Alpaca Trader activated\nCurrent Time: " + current_time)
