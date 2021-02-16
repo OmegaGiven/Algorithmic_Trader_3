@@ -47,23 +47,24 @@ try:
         if current_time == next_trade_time:
             amount = float(account.buying_power) // len(stocks)
             for i in stocks:
+                # try:
+                trade_or_not = Alpaca_Functions.macd(i, api, 4)
                 try:
-                    trade_or_not = Alpaca_Functions.macd(i, api, 4)
-
+                    api.get_position(i[0])
                     if trade_or_not == 'sell':
                         try:
                             Alpaca_Functions.sell(i, api, api.get_position(i).qty)
                         except:
                             continue
-                    try:
-                        api.get_position(i[0])
-                        if trade_or_not == 'buy':
-                            quantity = Alpaca_Functions.get_quantity(i, api, amount)
-                            Alpaca_Functions.buy(i, api, quantity)
-                    except:
-                        print("Already bought in on: " + i)
                 except:
-                    print("Cannont buy right now. Maybe its a weekend")
+                    print("Dont own any of: " + i)
+
+                if trade_or_not == 'buy':
+                    quantity = Alpaca_Functions.get_quantity(i, api, amount)
+                    Alpaca_Functions.buy(i, api, quantity)
+
+                # except:
+                #     print("Cannont buy right now. Maybe its a weekend")
 
             print("Next Trade time At: " + str(next_time(times)))
         times.append(next_trade_time)
