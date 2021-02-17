@@ -8,7 +8,7 @@ def margingains(n_day, current_day):
     for i in n_day:
         total += float(i)
     moving_average = total / len(n_day)
-    if current_day > moving_average * 1.05:
+    if current_day < moving_average * 0.95:
         return "sell"
     else:
         return "buy"
@@ -39,22 +39,22 @@ def calculateMR(stock_in, x=3, starting=1000):
 
         day_list = [daily_close_list[i].c for i in range(x - day_average, x)]  # here is a proper MACD
         # print(day_list, daily_close_list[x].c)
-        do_what = margingains(day_list, daily_close_list[x].c)
+        do_what = margingains(day_list, daily_close_list[x].o)
 
         # code for if the MACD algorithm outputed a buy
         if do_what == 'buy' and status == 0:
             # divides the price by the value we have to buy as much of the stock as possible.
-            amount = account / daily_close_list[x].c
-            account -= amount * daily_close_list[x].c
-            print('buy at: ' + str(daily_close_list[x].c))
+            amount = account / daily_close_list[x].o
+            account -= amount * daily_close_list[x].o
+            print('buy at: ' + str(daily_close_list[x].o))
             print('account now at:' + str(account))
             buy_counter += 1
             status = 1
 
         # code for if the MACD algorithm outputed a sell
         elif do_what == 'sell' and status == 1:
-            account += amount * daily_close_list[x].c
-            print('sell stock at: ' + str(daily_close_list[x].c) )
+            account += amount * daily_close_list[x].o
+            print('sell stock at: ' + str(daily_close_list[x].o) )
             print('account now at:' + str(account))
             status = 0
             sell_counter += 1
@@ -62,8 +62,8 @@ def calculateMR(stock_in, x=3, starting=1000):
 
     # sells based on last price so we can see the total.
     if status == 1:
-        account += amount * daily_close_list[x - 1].c
-        print('sell stock at: ' + str(daily_close_list[x - 1].c))
+        account += amount * daily_close_list[x - 1].o
+        print('sell stock at: ' + str(daily_close_list[x - 1].o))
         print('account now at:' + str(account))
         sell_counter += 1
 
@@ -78,21 +78,21 @@ def calculateMR(stock_in, x=3, starting=1000):
 account = api.get_account()
 
 print("MSFT")
-bar_set = api.get_barset('MSFT', 'day')
+bar_set = api.get_barset('MSFT', 'day', )
 stock = bar_set['MSFT']
 calculateMR(stock, 1, 1000)
 
 print("AAPL")
-bar_set = api.get_barset('AAPL', 'day')
+bar_set = api.get_barset('AAPL', 'day', )
 stock = bar_set['AAPL']
 calculateMR(stock, 1, 1000)
 
 print("AMD")
-bar_set = api.get_barset('AMD', 'day')
+bar_set = api.get_barset('AMD', 'day', )
 stock = bar_set['AMD']
 calculateMR(stock, 1, 1000)
 
 print("RCL")
-bar_set = api.get_barset('RCL', 'day')
+bar_set = api.get_barset('RCL', 'day', limit=250)
 stock = bar_set['RCL']
-calculateMR(stock, 1, 1000)
+calculateMR(stock, 3, 1000)

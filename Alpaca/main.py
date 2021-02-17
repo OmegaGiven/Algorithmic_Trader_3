@@ -1,6 +1,5 @@
 import Account_Info, config, Alpaca_Functions
 from datetime import datetime
-import time as t
 
 times = config.times  # times to check if we want to buy or not
 stocks = config.stocks  # where stocks[[symbol, quantity desired]]
@@ -27,7 +26,7 @@ def next_time(times):
             continue
         elif hour:
             return time
-    return time[0]
+    return times[0]
 
 
 try:
@@ -65,8 +64,12 @@ try:
 
             # for every stock in your list it will check whether to buy or sell
             for i in stocks:
-                # checks the barset and sees whether to buy or not.
-                trade_or_not = Alpaca_Functions.macd(i, api, 2)
+                if i == "RCL":
+                    # runs a different algorithm
+                    trade_or_not = Alpaca_Functions.margingains(i, api, 3)
+                else:
+                    # checks the barset and sees whether to buy or not.
+                    trade_or_not = Alpaca_Functions.macd(i, api, 2)
 
                 # the try catch is to make sure the program doesnt end if you check your position and there is none.
                 try:
@@ -83,7 +86,7 @@ try:
                     quantity = Alpaca_Functions.get_quantity(i, api, amount)
                     Alpaca_Functions.buy(i, api, quantity)
 
-
+            times.append(next_trade_time)
             print("Next Trade time At: " + str(next_time(times)))
         times.append(next_trade_time)
 

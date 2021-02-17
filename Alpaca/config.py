@@ -1,5 +1,5 @@
 # Arrange entries in chronological order
 
-times = ["15:30:00"]
+times = ["07:45:00"]
 
 stocks = ["AMD", "MSFT", "AAPL", "RCL"]
