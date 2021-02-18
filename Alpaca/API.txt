@@ -1,3 +1,0 @@
-<key_id>
-<secret_key>
-https://paper-api.alpaca.markets

@@ -1,4 +1,11 @@
 import alpaca_trade_api as tradeapi
+import config
+
+
+# checks account from API. txt so you will need the 2 security keys and the route
+def getAccount():
+    api = tradeapi.REST(config.key_id, config.secret_id, config.site)
+    return api
 
 
 def macd(symbol, api, limit_quantity):
