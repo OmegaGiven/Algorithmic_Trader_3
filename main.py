@@ -1,5 +1,5 @@
 from os import listdir
-import MACD
+import strategies
 import YahooHistoryDownloader
 
 """
@@ -18,7 +18,7 @@ for x in testFiles:
     # print('MACD:')
     # MACD.calculateMACD("testFiles/" + x, 5, 100000)
     print('Mean Revision:')
-    MACD.calculateMR("testFiles/" + x, 5, 100000)
+    strategies.calculateMR("testFiles/" + x, 5, 100000)
     print('\n\n\n')
 
 input("Press Enter to Quit")

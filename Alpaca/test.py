@@ -1,20 +1,54 @@
-import Account_Info, config, Alpaca_Functions
+import config, Alpaca_Functions
+import csv
 
-api = Account_Info.getAccount()
+api = Alpaca_Functions.getAccount()
+macd105 = "macd105"
+macd100 = "macd100"
+macd095 = "macd095"
+mr095 = "mr095"
+mr100 = "mr100"
+mr105 = "mr105"
 
 
-def margingains(n_day, current_day):
+def decision_method(n_day, current_day, operation=macd105):
     total = 0
     for i in n_day:
         total += float(i)
     moving_average = total / len(n_day)
-    if current_day > moving_average * 1.05:
-        return "sell"
-    else:
-        return "buy"
+
+    if operation == macd105:
+        if current_day > moving_average * 1.05:
+            return "sell"
+        else:
+            return "buy"
+    if operation == macd100:
+        if current_day > moving_average:
+            return "sell"
+        else:
+            return "buy"
+    if operation == macd095:
+        if current_day > moving_average * 0.95:
+            return "sell"
+        else:
+            return "buy"
+    if operation == mr095:
+        if current_day < moving_average * 0.95:
+            return "sell"
+        else:
+            return "buy"
+    if operation == mr100:
+        if current_day < moving_average:
+            return "sell"
+        else:
+            return "buy"
+    if operation == mr100:
+        if current_day < moving_average * 1.05:
+            return "sell"
+        else:
+            return "buy"
 
 
-def calculateMR(stock_in, x=3, starting=1000):
+def calculate(stock_in, x=3, starting=1000, method=macd105):
     # x is for how many days average we want to do our MACD then is used to traverse through the data.
     # indicates the amount we want to start with
     daily_close_list = stock_in
@@ -27,6 +61,9 @@ def calculateMR(stock_in, x=3, starting=1000):
 
     amount = 0  # sets up how much of the stock we own
 
+    account_over_time = []
+    buy_over_time = []
+    sell_over_time = []
     print('start account: ' + str(account))
 
     # counters for how many buys and sells have been made.
@@ -39,23 +76,23 @@ def calculateMR(stock_in, x=3, starting=1000):
 
         day_list = [daily_close_list[i].c for i in range(x - day_average, x)]  # here is a proper MACD
         # print(day_list, daily_close_list[x].c)
-        do_what = margingains(day_list, daily_close_list[x].c)
+        do_what = decision_method(day_list, daily_close_list[x].c, method)
 
         # code for if the MACD algorithm outputed a buy
         if do_what == 'buy' and status == 0:
             # divides the price by the value we have to buy as much of the stock as possible.
             amount = account / daily_close_list[x].c
             account -= amount * daily_close_list[x].c
-            print('buy at: ' + str(daily_close_list[x].c))
-            print('account now at:' + str(account))
+            buy_over_time.append(daily_close_list[x].c)
+            account_over_time.append(account)
             buy_counter += 1
             status = 1
 
         # code for if the MACD algorithm outputed a sell
         elif do_what == 'sell' and status == 1:
             account += amount * daily_close_list[x].c
-            print('sell stock at: ' + str(daily_close_list[x].c) )
-            print('account now at:' + str(account))
+            sell_over_time.append(daily_close_list[x].c)
+            account_over_time.append(account)
             status = 0
             sell_counter += 1
         x += 1
@@ -63,36 +100,72 @@ def calculateMR(stock_in, x=3, starting=1000):
     # sells based on last price so we can see the total.
     if status == 1:
         account += amount * daily_close_list[x - 1].c
-        print('sell stock at: ' + str(daily_close_list[x - 1].c))
-        print('account now at:' + str(account))
+        sell_over_time.append(daily_close_list[x-1].c)
+        account_over_time.append(account)
         sell_counter += 1
 
     # Print Statistics from the data.
     print('amount of buys: ' + str(buy_counter))
     print('amount of sells: ' + str(sell_counter))
     print('account at day ' + str(x) + ': ' + str(account))
-    print('percent gain: ' + str((account / starting * 100) - 100) + "%" + '\n')
-
+    percent_gain = [(account / starting * 100) - 100]
+    print('percent gain: ' + str(percent_gain[0]) + "%" + '\n')
+    return account_over_time, buy_over_time, sell_over_time, percent_gain
 
 
 account = api.get_account()
+stocks = ["MSFT", "AAPL", "AMD", "RCL"]
+with open('historicalTest.csv', 'w', newline='') as file:
+    writer = csv.writer(file)
+    for x in stocks:
+        print(x)
+        bar_set = api.get_barset(x, 'day', limit=100)
+        stock = bar_set[x]
 
-print("MSFT")
-bar_set = api.get_barset('MSFT', 'day', limit=250)
-stock = bar_set['MSFT']
-calculateMR(stock, 1, 1000)
+        account_over_time, buy_over_time, sell_over_time, percent_gain = calculate(stock, 1, 1000)
+        writer.writerow([x, macd105])
+        writer.writerow(account_over_time)
+        writer.writerow(buy_over_time)
+        writer.writerow(sell_over_time)
+        writer.writerow(percent_gain)
+        writer.writerow([])
 
-print("AAPL")
-bar_set = api.get_barset('AAPL', 'day', limit=250 )
-stock = bar_set['AAPL']
-calculateMR(stock, 1, 1000)
+        account_over_time, buy_over_time, sell_over_time, percent_gain = calculate(stock, 1, 1000, macd100)
+        writer.writerow([x, macd100])
+        writer.writerow(account_over_time)
+        writer.writerow(buy_over_time)
+        writer.writerow(sell_over_time)
+        writer.writerow(percent_gain)
+        writer.writerow([])
 
-print("AMD")
-bar_set = api.get_barset('AMD', 'day', limit=250 )
-stock = bar_set['AMD']
-calculateMR(stock, 1, 1000)
+        account_over_time, buy_over_time, sell_over_time, percent_gain = calculate(stock, 1, 1000, macd095)
+        writer.writerow([x, macd095])
+        writer.writerow(account_over_time)
+        writer.writerow(buy_over_time)
+        writer.writerow(sell_over_time)
+        writer.writerow(percent_gain)
+        writer.writerow([])
 
-print("RCL")
-bar_set = api.get_barset('RCL', 'day',)
-stock = bar_set['RCL']
-calculateMR(stock, 3, 1000)
+        account_over_time, buy_over_time, sell_over_time, percent_gain = calculate(stock, 3, 1000, mr095)
+        writer.writerow([x, mr095])
+        writer.writerow(account_over_time)
+        writer.writerow(buy_over_time)
+        writer.writerow(sell_over_time)
+        writer.writerow(percent_gain)
+        writer.writerow([])
+
+        account_over_time, buy_over_time, sell_over_time, percent_gain = calculate(stock, 3, 1000, mr100)
+        writer.writerow([x, mr100])
+        writer.writerow(account_over_time)
+        writer.writerow(buy_over_time)
+        writer.writerow(sell_over_time)
+        writer.writerow(percent_gain)
+        writer.writerow([])
+
+        account_over_time, buy_over_time, sell_over_time, percent_gain = calculate(stock, 3, 1000, mr105)
+        writer.writerow([x, mr105])
+        writer.writerow(account_over_time)
+        writer.writerow(buy_over_time)
+        writer.writerow(sell_over_time)
+        writer.writerow(percent_gain)
+        writer.writerow([])
