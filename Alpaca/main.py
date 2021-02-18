@@ -60,10 +60,10 @@ try:
         # if its time to trade do the following:
         if current_time == next_trade_time:
             # allocate buypower to the stocks you want. currently set to be even
-            amount = float(account.buying_power) // len(stocks)
-
+            counter = 0
             # for every stock in your list it will check whether to buy or sell
             for i in stocks:
+                amount = float(account.buying_power) // (len(stocks) - counter)
                 if i == "RCL":
                     # runs a different algorithm
                     trade_or_not = Alpaca_Functions.margingains(i, api, 3)
@@ -85,6 +85,7 @@ try:
                 if trade_or_not == 'buy':
                     quantity = Alpaca_Functions.get_quantity(i, api, amount)
                     Alpaca_Functions.buy(i, api, quantity)
+                counter += 1
 
             times.append(next_trade_time)
             print("Next Trade time At: " + str(next_time(times)))
