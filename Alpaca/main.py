@@ -1,4 +1,4 @@
-import Account_Info, config, Alpaca_Functions
+import config, Alpaca_Functions
 from datetime import datetime
 
 times = config.times  # times to check if we want to buy or not
@@ -30,7 +30,7 @@ def next_time(times):
 
 
 try:
-    api = Account_Info.getAccount()
+    api = Alpaca_Functions.getAccount()
 
     account = api.get_account()
     print(account)
@@ -44,6 +44,7 @@ try:
 
     current_time = datetime.now().strftime("%H:%M:%S")
     print("Alpaca Trader activated\nCurrent Time: " + current_time)
+    print(datetime.now())
     print("Next check to trade at: " + str(next_time(times)))
 
     while True:
@@ -88,6 +89,7 @@ try:
                 counter += 1
 
             times.append(next_trade_time)
+            print(datetime.now())
             print("Next Trade time At: " + str(next_time(times)))
         times.append(next_trade_time)
 
