@@ -119,7 +119,7 @@ with open('historicalTest.csv', 'w', newline='') as file:
     writer = csv.writer(file)
     for x in stocks:
         print(x)
-        bar_set = api.get_barset(x, 'day', limit=100)
+        bar_set = api.get_barset(x, 'day', limit=5)
         stock = bar_set[x]
 
         account_over_time, buy_over_time, sell_over_time, percent_gain = calculate(stock, 1, 1000)
