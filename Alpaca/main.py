@@ -67,7 +67,7 @@ try:
                 amount = float(account.buying_power) // (len(stocks) - counter)
                 if i == "RCL":
                     # runs a different algorithm
-                    trade_or_not = Alpaca_Functions.macd(i, api, 3)
+                    trade_or_not = Alpaca_Functions.margingains(i, api, 3)
                 else:
                     # checks the barset and sees whether to buy or not.
                     trade_or_not = Alpaca_Functions.macd(i, api, 2)

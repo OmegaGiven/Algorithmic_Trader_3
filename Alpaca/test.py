@@ -41,7 +41,7 @@ def decision_method(n_day, current_day, operation=macd105):
             return "sell"
         else:
             return "buy"
-    if operation == mr100:
+    if operation == mr105:
         if current_day < moving_average * 1.05:
             return "sell"
         else:
@@ -69,6 +69,7 @@ def calculate(stock_in, x=3, starting=1000, method=macd105):
     # counters for how many buys and sells have been made.
     buy_counter = 0
     sell_counter = 0
+    print(daily_close_list)
     while x < len(daily_close_list):
 
         # the next commented line is a messed up list but for some reason it works really well
@@ -77,7 +78,7 @@ def calculate(stock_in, x=3, starting=1000, method=macd105):
         day_list = [daily_close_list[i].c for i in range(x - day_average, x)]  # here is a proper MACD
         # print(day_list, daily_close_list[x].c)
         do_what = decision_method(day_list, daily_close_list[x].c, method)
-
+        print(day_list)
         # code for if the MACD algorithm outputed a buy
         if do_what == 'buy' and status == 0:
             # divides the price by the value we have to buy as much of the stock as possible.
@@ -114,12 +115,12 @@ def calculate(stock_in, x=3, starting=1000, method=macd105):
 
 
 account = api.get_account()
-stocks = ["MSFT", "AAPL", "AMD", "RCL"]
+stocks = ["RCL"]
 with open('historicalTest.csv', 'w', newline='') as file:
     writer = csv.writer(file)
     for x in stocks:
         print(x)
-        bar_set = api.get_barset(x, 'day', limit=5)
+        bar_set = api.get_barset(x, 'day', limit=7)
         stock = bar_set[x]
 
         account_over_time, buy_over_time, sell_over_time, percent_gain = calculate(stock, 1, 1000)

@@ -16,6 +16,8 @@ def macd(symbol, api, limit_quantity):
         total += stock[x].c
     days_average = total / (limit_quantity - 1)
     current = stock[limit_quantity-1].c
+    print("past day average: ", days_average)
+    print("current price: ", current)
     if current > days_average * 1.05:
         return 'buy'
     else:
@@ -25,10 +27,13 @@ def margingains(symbol, api, limit_quantity):
     bar_set = api.get_barset(symbol, 'day', limit=limit_quantity)
     stock = bar_set[symbol]
     total = 0
+    print(stock)
     for x in range(limit_quantity-1):
         total += stock[x].c
     days_average = total / (limit_quantity - 1)
     current = stock[limit_quantity-1].c
+    print("past day average: ", days_average)
+    print("current price: ", current)
     if current < days_average * 0.95:
         return 'buy'
     else:
